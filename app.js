@@ -1,5 +1,6 @@
 var app = require('express').createServer();
 var Twit = require('twit');
+var request = require('request');
 
 
 /*
@@ -52,7 +53,7 @@ var tweets,
 		images;
 
 
-var url_regex = /^https?\:\/\/(pic\.twitter\.com|instagr\.am\/p|twitpic\.com)\/(.*)/ig;
+var url_regex = /^https?\:\/\/((pic\.twitter|twitpic|)\.com|(instagr\.am|instagram\.com)\/p)\/(.*)/ig;
 
 require('mongodb').connect(mongourl, function(err, conn){
   conn.collection('tweets', function(err, coll){ tweets = coll; });
@@ -60,11 +61,13 @@ require('mongodb').connect(mongourl, function(err, conn){
 	conn.collection('images', function(err, coll){ images = coll; });
 
 	// var stream = T.stream('statuses/filter', {track: 'twitpic,instagr,pic'});
-	var stream = T.stream('statuses/filter', {track: 'beautiful day'});
+	var stream = T.stream('statuses/filter', {track: 'instagram'});
 		
 	stream.on('tweet', function (tweet) {
 		save_tweet(tweet);
 	});
+
+
 	
 	
 	function save_tweet(tweet) {
@@ -85,8 +88,9 @@ require('mongodb').connect(mongourl, function(err, conn){
 				images.find({url: match}, {safe:true}, function(err, cursor){
 			    cursor.toArray(function(err, items){
 						if (!items.length) {
-							images.insert({url: match, domain: domain, user: tweet.user.screen_name, timestamp: new Date()}, {safe:true}, function(err){
+							images.insert({url: match, domain: domain, user: tweet.user.screen_name, timestamp: new Date()}, {safe:true}, function(err, docs){
 								console.log('Inserted ' + match);
+								save_full_url(docs[0]);
 							});
 						} else {
 							console.log('FOUND  ' + match);
@@ -97,10 +101,36 @@ require('mongodb').connect(mongourl, function(err, conn){
 			}
 		}
 		
-		  
-	  tweets.insert(object_to_insert, {safe:true}, function(err){
-	  	// console.log('Success!');
-	  });
+	  tweets.insert(object_to_insert, {safe:true}, function(err){});
+	}
+
+	function save_full_url(image) {
+		var image_url = '';
+		
+		switch (image.domain.toLowerCase()) {
+			case 'twitpic.com':
+				image_url = image.url.replace('twitpic.com/','twitpic.com/show/thumb/');
+				break;
+									
+			case 'instagram.com':
+			case 'instagr.am':
+				image_url = image.url.replace(/\/$/g,'') + '/media?s=t';
+				break;
+								
+			default:
+				return;
+				break;
+		}
+
+		request(image_url, function (error, response, body) {
+		  if (!error && response.statusCode == 200) {
+				images.update({url: image.url}, {$set: {image_url: response.request.uri.href}}, {safe: true, multi: true}, function(err){
+			    console.log('Saved ' + response.request.uri.href);
+				});
+		  } else {
+		  	console.log(response.statusCode, error);
+		  }
+		})
 	}
 		
 		
@@ -129,8 +159,23 @@ require('mongodb').connect(mongourl, function(err, conn){
     });
   });
 
-	app.get('/images', function(req, res) {
-    images.find({}, {limit: 30, sort:[['_id','desc']]}, function(err, cursor) {
+	app.get('/images/:action', function(req, res) {
+		if (req.params.action == 'approve' || req.params.action == 'reject') {
+			var url = req.query.url;
+			
+			console.log('url: ', url);
+			
+			images.update({url: url}, {$set: {status: req.params.action}}, {safe: true, multi: true}, function(err){
+		    res.writeHead(200, {'Content-Type': 'text/json', 'Access-Control-Allow-Origin': '*'});
+		    res.write(JSON.stringify({success: true}));
+		    res.end();
+			});
+			return;
+		}
+		
+		var count = req.query.last_id ? 10 : 50; 
+		
+    images.find({timestamp: {$gt: new Date(req.query.last_id)}}, {limit: count, sort:[['timestamp','desc']]}, function(err, cursor) {
 	    cursor.toArray(function(err, items){
 		    res.writeHead(200, {'Content-Type': 'text/json', 'Access-Control-Allow-Origin': '*'});
 		    res.write(JSON.stringify(items));
@@ -140,8 +185,6 @@ require('mongodb').connect(mongourl, function(err, conn){
   });
 
 });
-
-
 
 
 
