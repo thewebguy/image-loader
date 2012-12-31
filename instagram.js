@@ -83,7 +83,7 @@ mongodb.connect(mongourl, function(err, conn){
 							if (post.link){
 								var image_to_insert = {url: post.link, image_url: post.images.standard_resolution.url, domain: 'instagram.com', user: post.user.username, timestamp: new Date()};
 								
-								images.find({url: images.url}, {safe:true}, function(err, cursor){
+								images.find({url: image_to_insert.url}, {safe:true}, function(err, cursor){
 							    cursor.toArray(function(err, items){
 										console.log('Found: ', items);
 										
