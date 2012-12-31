@@ -1,8 +1,10 @@
 {
  "name":"af-node-base",
   "version":"0.0.1",
+	"private":true,
+	"readme":"Sup",
   "dependencies":{
-    "express":"",
+    "express":"3.x",
     "mongodb":"",
 		"twit":""
   }
