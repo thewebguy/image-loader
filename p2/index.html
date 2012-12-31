@@ -236,7 +236,7 @@
 		$tabs.removeClass('active');
 		$('#' + status).addClass('active');
 		
-		password = prompt('Password for Insta Loader');
+		password = prompt('Password for Insta Loader:');
 
 	  socket.on('update', function (data) {
 	    // console.log('update', data);
@@ -300,7 +300,8 @@
 					
 					if (data && data.length) {
 						if (data.error && data.error == 'password') {
-							alert('Invalid password.');
+							password = prompt('Invalid password. Password for Insta Loader:');
+							more_images();
 							return;
 						}
 						
