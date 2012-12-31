@@ -360,19 +360,21 @@
 			var url = $thumb.data('image-url');
 			var id = $thumb.attr('id');
 			
+			
+			var $clone = $thumb.clone();
+			
+			$log.prepend($clone);
+			$thumb.remove();
+			
+			
 			$.ajax({url: '/images/' + action, data: {url: url, id: id, password: password}, success: function(data){
-				log_action($this.parent(), action);
+				log_action($clone, action);
 			}, dataType: "json"});
 		});
 		
 		function log_action($thumb, action) {
 			$thumb.removeClass('approve reject favorite').addClass(action);
 			if (action == 'favorite') $thumb.addClass('approve');
-			
-			var $clone = $thumb.clone();
-			
-			$log.prepend($clone);
-			$thumb.remove();
 			
 			var thumbs = $('.thumb', $log);
 			if (thumbs.length > 5) {
