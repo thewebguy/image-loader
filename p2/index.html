@@ -289,8 +289,9 @@
 		
 		var more_images = function(){
 			timeout = setTimeout(function(){
-				if ($images.length > 20) {
-					console.log('Len: ', $images.length);
+				if ($('.thumb', $images).length > 20) {
+					console.log('return');
+					return more_images();
 				}
 				
 				$.ajax({url: 'http://agile-dusk-2544.herokuapp.com/images/show', data: {last_id: last_id, status: status}, success: function(data){
