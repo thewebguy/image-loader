@@ -16,7 +16,7 @@ var exec = require('child_process').exec;
 /*    Express Options
 */
 app.configure(function(){
-	app.use(express.static(process.env.PWD + '/public'));
+	app.use(express.static(process.env.PWD + '/p2'));
 });
 
 
