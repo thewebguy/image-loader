@@ -135,7 +135,7 @@ mongodb.connect(mongourl, function(err, conn){
 						(function(){
 							if (post.link){
 								images.insert({url: post.link, image_url: post.images.standard_resolution.url, domain: 'instagram.com', user: post.user.username, timestamp: new Date()}, {safe:true}, function(err, docs){
-									console.log('Inserted!', docs[0].url);
+									// console.log('Inserted!', docs[0].url);
 								});
 							}
 						})();
