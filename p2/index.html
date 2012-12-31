@@ -237,7 +237,7 @@
 		
 
 	  socket.on('update', function (data) {
-	    console.log(data);
+	    // console.log(data);
 			
 			if (data.status != status) {
 				var $image = $('#' + data.id, $images);
@@ -290,7 +290,6 @@
 		var more_images = function(){
 			timeout = setTimeout(function(){
 				if ($('.thumb', $images).length > 20) {
-					console.log('return');
 					return more_images();
 				}
 				
