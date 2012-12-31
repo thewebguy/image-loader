@@ -289,7 +289,7 @@
 				$.ajax({url: 'http://agile-dusk-2544.herokuapp.com/images/show', data: {last_id: last_id, status: status}, success: function(data){
 					// console.log(data);
 					
-					if (data.length) {
+					if (data && data.length) {
 						var image0 = data[0];
 						last_id = status == 'new' ? image0.timestamp : image0[image0.status + '_timestamp'];
 						
