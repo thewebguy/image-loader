@@ -1,1 +1,1 @@
-web: node insta.js
+web: node app.js

@@ -9,7 +9,6 @@ var request = require('request');
 var fs = require('fs');
 
 var mongodb = require('mongodb');
-var $p = require('procstreams');
 var exec = require('child_process').exec;
 
 
@@ -377,11 +376,6 @@ mongodb.connect(mongourl, function(err, conn){
 							      console.log('exec error: ' + error);
 							    }
 							});
-						
-							// $p('convert  -colorspace Gray ' + photos_in_path + file + '  -page +0+0 ' + x_path + '  -flatten  ' + photos_out_path + file, function(err, stdout, stderr){
-							// 	if (err) console.log('$p error: ', err);
-							// 	$p('rm ' + photos_in_path + file);
-							// });
 						}
 					})();
 				}
