@@ -301,6 +301,12 @@ mongodb.connect(mongourl, function(err, conn){
   });
 	
 	app.get('/images/:action', function(req, res) {
+		if (!req.params.password || req.params.password != 'test') {
+	    res.writeHead(200, {'Content-Type': 'text/json', 'Access-Control-Allow-Origin': '*'});
+	    res.write(JSON.stringify({error: "password"}));
+	    res.end();
+		}
+		
 		var action = req.params.action;
 		var favorite = 0;
 		

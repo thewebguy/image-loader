@@ -299,6 +299,11 @@
 					// console.log(data);
 					
 					if (data && data.length) {
+						if (data.error && data.error == 'password') {
+							alert('Invalid password.');
+							return;
+						}
+						
 						var image0 = data[0];
 						last_id = status == 'new' ? image0.timestamp : image0[image0.status + '_timestamp'];
 						
