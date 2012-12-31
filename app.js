@@ -48,6 +48,8 @@ var generate_mongo_url = function(obj){
   }
 }
 
+process.env.MONGOLAB_URI = 'mongodb://nodejitsu_thewebguy:r92t4geg8jldk5jrapn9i2rp09@ds043927.mongolab.com:43927/nodejitsu_thewebguy_nodejitsudb434421380';
+
 if (process.env.MONGOLAB_URI) {
 	var mongourl = process.env.MONGOLAB_URI;
 } else if(process.env.VCAP_SERVICES){
