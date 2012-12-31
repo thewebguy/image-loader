@@ -386,7 +386,7 @@
 					delay = default_delay;
 					more_images();
 				}, error: function(jqXHR, textStatus, errorThrown){
-					alert(textStatus);
+					alert("Error: " + textStatus + "\nPlease try refreshing.");
 				}, dataType: "json"});
 			}, delay);
 		};
