@@ -254,7 +254,7 @@ mongodb.connect(mongourl, function(err, conn){
 
 	/*    Express Options
 	*/
-	//console.log('dirname', __dirname);
+	console.log('dirname', __dirname, process.env.PWD, process.cwd());
   app.use(express.static('public'));
 
 
