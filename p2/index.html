@@ -236,7 +236,13 @@
 		$tabs.removeClass('active');
 		$('#' + status).addClass('active');
 		
-		password = prompt('Password for Insta Loader:');
+		password = readCookie("password");
+		
+		if (!password) {
+			password = prompt('Password for Insta Loader:');
+			createCookie("password",password,7);
+		}
+		
 
 	  socket.on('update', function (data) {
 	    // console.log('update', data);
@@ -289,6 +295,32 @@
 			more_images();
 		}
 		
+		function createCookie(name,value,days) {
+			if (days) {
+				var date = new Date();
+				date.setTime(date.getTime()+(days*24*60*60*1000));
+				var expires = "; expires="+date.toGMTString();
+			}
+			else var expires = "";
+			document.cookie = name+"="+value+expires+"; path=/";
+		}
+
+		function readCookie(name) {
+			var nameEQ = name + "=";
+			var ca = document.cookie.split(';');
+			for(var i=0;i < ca.length;i++) {
+				var c = ca[i];
+				while (c.charAt(0)==' ') c = c.substring(1,c.length);
+				if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+			}
+			return null;
+		}
+
+		function eraseCookie(name) {
+			createCookie(name,"",-1);
+		}
+		
+		
 		var more_images = function(){
 			timeout = setTimeout(function(){
 				if ($('.thumb', $images).length > 20) {
@@ -300,7 +332,11 @@
 					
 					if (data && data.length) {
 						if (data.error && data.error == 'password') {
+							eraseCookie('password');
+							
 							password = prompt('Invalid password. Password for Insta Loader:');
+							createCookie("password",password,7);
+							
 							more_images();
 							return;
 						}
