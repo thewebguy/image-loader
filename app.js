@@ -14,7 +14,7 @@ var exec = require('child_process').exec;
 
 /*    Init Express
 */
-server.listen(process.env.VCAP_APP_PORT || 3001);
+server.listen(process.env.PORT || 3001);
 
 io.sockets.on('connection', function (socket) {
   // socket.emit('news', { hello: 'world' });
