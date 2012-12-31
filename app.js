@@ -27,6 +27,18 @@ io.sockets.on('connection', function (socket) {
 
 /*    Init MongoDB
 */
+var generate_mongo_url = function(obj){
+  obj.hostname = (obj.hostname || 'localhost');
+  obj.port = (obj.port || 27017);
+  obj.db = (obj.db || 'test');
+  
+  if(obj.username && obj.password){
+    return "mongodb://" + obj.username + ":" + obj.password + "@" + obj.hostname + ":" + obj.port + "/" + obj.db;
+  } else {
+    return "mongodb://" + obj.hostname + ":" + obj.port + "/" + obj.db;
+  }
+}
+
 if (process.env.MONGOHQ_URL) {
 	var mongourl = process.env.MONGOHQ_URL;
 } else if(process.env.VCAP_SERVICES){
@@ -43,17 +55,6 @@ if (process.env.MONGOHQ_URL) {
   }
 	
 	var mongourl = generate_mongo_url(mongo);
-}
-var generate_mongo_url = function(obj){
-  obj.hostname = (obj.hostname || 'localhost');
-  obj.port = (obj.port || 27017);
-  obj.db = (obj.db || 'test');
-  
-  if(obj.username && obj.password){
-    return "mongodb://" + obj.username + ":" + obj.password + "@" + obj.hostname + ":" + obj.port + "/" + obj.db;
-  } else {
-    return "mongodb://" + obj.hostname + ":" + obj.port + "/" + obj.db;
-  }
 }
 
 
