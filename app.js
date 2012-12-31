@@ -301,7 +301,7 @@ mongodb.connect(mongourl, function(err, conn){
   });
 	
 	app.get('/images/:action', function(req, res) {
-		if (!req.query.password || req.query.password != 'test') {
+		if (!req.query.password || req.query.password != 'P2013') {
 	    res.writeHead(200, {'Content-Type': 'text/json', 'Access-Control-Allow-Origin': '*'});
 	    res.write(JSON.stringify({error: "password"}));
 	    res.end();
