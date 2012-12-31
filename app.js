@@ -9,7 +9,7 @@ var request = require('request');
 var fs = require('fs');
 
 var mongodb = require('mongodb');
-var exec = require('child_process').exec;
+// var exec = require('child_process').exec;
 
 
 
@@ -118,63 +118,6 @@ mongodb.connect(mongourl, function(err, conn){
 	stream.on('tweet', function (tweet) {
 		save_tweet(tweet);
 	});
-
-
-
-	/*    Set up Instagram pull
-	*/
-	var instagram_timeout;
-	var min_tag_id = 0;
-	
-	var pull_instagram = function(){
-		instagram_timeout = setTimeout(function(){
-			var url = 'https://api.instagram.com/v1/tags/nofilter/media/recent'
-				+ '?client_id=193accc062384ff599748651192f236e'
-				+ '&client_secret=ec4d2e4379a0428fb70d9d1e7929aacc'
-				+ '&min_tag_id=' + min_tag_id;
-			
-			request(url, function (error, response, body) {
-			  if (!error && response.statusCode == 200) {
-					body = JSON.parse(body);
-					
-					min_tag_id = body.pagination.next_min_tag_id;
-					
-					for (var i in body.data) {
-						var post = body.data[i];
-						
-						// console.log('isnta', post);
-					
-					  var object_to_insert = {
-							'username': post.user.username,
-							'name': post.user.full_name,
-							'image': post.images.standard_resolution.url,
-							'user_id': post.user.id,
-							'text': post.caption ? post.caption.text : '',
-							'type': 'instagram',
-							'social_id': post.id,
-							'timestamp': post.created_time,
-							'location': post.location
-						};
-						
-						(function(){
-							if (post.link){
-								images.insert({url: post.link, image_url: post.images.standard_resolution.url, domain: 'instagram.com', user: post.user.username, timestamp: new Date()}, {safe:true}, function(err, docs){
-									console.log('Inserted!', err, docs);
-								});
-							}
-						})();
-					}
-					
-			  } else {
-			  	console.log(response.statusCode, error);
-			  }
-			});
-			
-			pull_instagram();
-		}, 3000);
-	}
-	
-	pull_instagram();
 
 
 
