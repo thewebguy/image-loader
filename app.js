@@ -64,6 +64,8 @@ if (process.env.MONGOHQ_URL) {
   }
 	
 	var mongourl = generate_mongo_url(mongo);
+	
+	var mongourl = "mongodb://heroku:df18799708dbe682a0644ef3ec227fb9@miles.mongohq.com:10033/app10327622";
 }
 
 
