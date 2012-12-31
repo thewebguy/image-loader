@@ -85,9 +85,11 @@ mongodb.connect(mongourl, function(err, conn){
 								
 								images.find({url: images.url}, {safe:true}, function(err, cursor){
 							    cursor.toArray(function(err, items){
+										console.log('Found: ', items);
+										
 										if (!items.length) {
 											images.insert(image_to_insert, {safe:true}, function(err, docs){
-												console.log('Inserted!', err, docs);
+												// console.log('Inserted!', err, docs);
 											});
 										}
 									});
