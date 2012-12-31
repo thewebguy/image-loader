@@ -113,7 +113,7 @@ mongodb.connect(mongourl, function(err, conn){
 	var x_path = 'assets/x.png';
 
 	// var stream = T.stream('statuses/filter', {track: 'twitpic,instagr,pic'});
-	var stream = T.stream('statuses/filter', {track: 'instagram'});
+	var stream = T.stream('statuses/filter', {track: 'christmas'});
 		
 	stream.on('tweet', function (tweet) {
 		save_tweet(tweet);
