@@ -330,8 +330,8 @@
 				$.ajax({url: 'http://insta-loader.herokuapp.com/images/show', data: {last_id: last_id, status: status, password: password}, success: function(data){
 					// console.log(data);
 					
-					if (data && data.length) {
-						if (data.error && data.error == 'password') {
+					if (data && data.error) {
+						if (data.error == 'password') {
 							eraseCookie('password');
 							
 							password = prompt('Invalid password. Password for Insta Loader:');
@@ -341,6 +341,9 @@
 							return;
 						}
 						
+					}
+					
+					if (data && data.length) {
 						var image0 = data[0];
 						last_id = status == 'new' ? image0.timestamp : image0[image0.status + '_timestamp'];
 						
