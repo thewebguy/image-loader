@@ -224,7 +224,8 @@
 	var timeout;
 	var delay = 1;
 	var default_delay = 3000;
-  var socket = io.connect('http://agile-dusk-2544.herokuapp.com');
+  var socket = io.connect('http://insta-loader.herokuapp.com');
+	var username, password;
 	
 	$(function(){
 		$images = $('#images');
@@ -235,9 +236,10 @@
 		$tabs.removeClass('active');
 		$('#' + status).addClass('active');
 		
+		password = prompt('Password for Insta Loader');
 
 	  socket.on('update', function (data) {
-	    console.log('update', data);
+	    // console.log('update', data);
 			
 			if (data.status != status) {
 				var $image = $('#' + data.id, $images);
@@ -293,7 +295,7 @@
 					return more_images();
 				}
 				
-				$.ajax({url: 'http://agile-dusk-2544.herokuapp.com/images/show', data: {last_id: last_id, status: status}, success: function(data){
+				$.ajax({url: 'http://insta-loader.herokuapp.com/images/show', data: {last_id: last_id, status: status, password: password}, success: function(data){
 					// console.log(data);
 					
 					if (data && data.length) {
@@ -353,7 +355,7 @@
 			var url = $thumb.data('image-url');
 			var id = $thumb.attr('id');
 			
-			$.ajax({url: '/images/' + action, data: {url: url, id: id}, success: function(data){
+			$.ajax({url: '/images/' + action, data: {url: url, id: id, password: password}, success: function(data){
 				log_action($this.parent(), action);
 			}, dataType: "json"});
 		});
