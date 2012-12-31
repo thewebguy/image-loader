@@ -237,7 +237,7 @@
 		
 
 	  socket.on('update', function (data) {
-	    // console.log(data);
+	    console.log('update', data);
 			
 			if (data.status != status) {
 				var $image = $('#' + data.id, $images);
@@ -294,7 +294,7 @@
 				}
 				
 				$.ajax({url: 'http://agile-dusk-2544.herokuapp.com/images/show', data: {last_id: last_id, status: status}, success: function(data){
-					console.log(data);
+					// console.log(data);
 					
 					if (data && data.length) {
 						var image0 = data[0];
