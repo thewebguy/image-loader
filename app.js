@@ -181,6 +181,7 @@ mongodb.connect(mongourl, function(err, conn){
 									
 			case 'instagram.com':
 			case 'instagr.am':
+				return;
 				image_url = image.url.replace(/\/$/g,'') + '/media?size=' + (save_image ? 'l' : 't');
 				break;
 								
@@ -248,6 +249,7 @@ mongodb.connect(mongourl, function(err, conn){
 	    res.writeHead(200, {'Content-Type': 'text/json', 'Access-Control-Allow-Origin': '*'});
 	    res.write(JSON.stringify({error: "password"}));
 	    res.end();
+			return;
 		}
 		
 		var action = req.params.action;
