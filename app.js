@@ -90,7 +90,7 @@ var url_regex = /^https?\:\/\/((pic\.twitter|twitpic|)\.com|(instagr\.am|instagr
 /*    Connect MongoDB and get rolling
 */
 mongodb.connect(mongourl, function(err, conn){
-	console.log(mongourl);
+	if (err) throw err;
 	
   conn.collection('tweets', function(err, coll){ tweets = coll; });
   conn.collection('users', function(err, coll){ users = coll; });
