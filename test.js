@@ -3,12 +3,12 @@ var mongodb = require('mongodb');
 var url = require('url');
 var log = console.log;
 
-process.env.MONGOHQ_URL = "mongodb://heroku:df18799708dbe682a0644ef3ec227fb9@miles.mongohq.com:10033/app10327622";
+// process.env.MONGOHQ_URL = "mongodb://heroku:df18799708dbe682a0644ef3ec227fb9@miles.mongohq.com:10033/app10327622";
  
 var connectionUri = url.parse(process.env.MONGOHQ_URL);
 var dbName = connectionUri.pathname.replace(/^\//, '');
  
-mongodb.Db.connect(process.env.MONGOHQ_URL, function(error, client) {
+mongodb.Db.connect(process.env.MONGOLAB_URI, function(error, client) {
   if (error) throw error;
  
   client.collectionNames(function(error, names){
