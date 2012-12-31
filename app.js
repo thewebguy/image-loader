@@ -27,7 +27,10 @@ io.sockets.on('connection', function (socket) {
 
 /*    Init MongoDB
 */
-if(process.env.VCAP_SERVICES){
+if (process.env.MONGOHQ_URL) {
+	var env = JSON.parse(process.env.MONGOHQ_URL);
+	var mongo = env['mongodb-1.8'][0]['credentials'];
+} else if(process.env.VCAP_SERVICES){
 	var env = JSON.parse(process.env.VCAP_SERVICES);
 	var mongo = env['mongodb-1.8'][0]['credentials'];
 } else {
