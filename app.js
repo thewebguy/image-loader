@@ -12,6 +12,15 @@ var mongodb = require('mongodb');
 var exec = require('child_process').exec;
 
 
+
+/*    Express Options
+*/
+app.configure(function(){
+	app.use(express.static(process.env.PWD + '/public'));
+});
+
+
+
 /*    Init Express
 */
 server.listen(process.env.PORT || 3001);
@@ -249,13 +258,6 @@ mongodb.connect(mongourl, function(err, conn){
 		  }
 		});
 	}
-
-
-
-	/*    Express Options
-	*/
-	console.log('dirname', __dirname, process.env.PWD, process.cwd());
-  app.use(express.static('public'));
 
 
 
