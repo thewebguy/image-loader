@@ -23,9 +23,12 @@ app.configure(function(){
 
 /*    Init Express
 */
+var iosocket;
 server.listen(process.env.PORT || 3001);
 
 io.sockets.on('connection', function (socket) {
+	iosocket = socket;
+	
   // socket.emit('news', { hello: 'world' });
   // socket.on('my other event', function (data) {
   //   console.log(data);
@@ -311,7 +314,8 @@ mongodb.connect(mongourl, function(err, conn){
 			set[action + '_timestamp'] = new Date();
 			
 			images.update({url: url}, {$set: set}, {safe: true, multi: true}, function(err){
-				io.sockets.emit('update', {status:action, id:id});
+				iosocket.send('message', {status:action, id:id});
+				// io.sockets.emit('update', {status:action, id:id});
 				
 				if (action == 'approve') {
 					images.findOne({_id: new mongodb.ObjectID(id)}, function(err, image){

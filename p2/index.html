@@ -236,7 +236,7 @@
 		$('#' + status).addClass('active');
 		
 
-	  socket.on('update', function (data) {
+	  socket.on('message', function (data) {
 	    console.log(data);
 			
 			if (data.status != status) {
