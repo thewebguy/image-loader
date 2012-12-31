@@ -48,8 +48,8 @@ var generate_mongo_url = function(obj){
   }
 }
 
-if (process.env.MONGOHQ_URL) {
-	var mongourl = process.env.MONGOHQ_URL;
+if (process.env.MONGOLAB_URI) {
+	var mongourl = process.env.MONGOLAB_URI;
 } else if(process.env.VCAP_SERVICES){
 	var env = JSON.parse(process.env.VCAP_SERVICES);
 	var mongo = env['mongodb-1.8'][0]['credentials'];
@@ -64,7 +64,6 @@ if (process.env.MONGOHQ_URL) {
   }
 	
 	var mongourl = generate_mongo_url(mongo);
-	
 	var mongourl = "mongodb://heroku:df18799708dbe682a0644ef3ec227fb9@miles.mongohq.com:10033/app10327622";
 }
 
