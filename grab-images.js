@@ -8,10 +8,15 @@ var images_timeout,
 		last_id = 0;
 
 var pull_images = function(){
+	console.log('Setting pull.');
+	
 	images_timeout = setTimeout(function(){
-		var url = base_url + '';
+		var url = base_url + '?id_field=approve&last_id=' + last_id;
+		console.log('Starting pull.');
 		
 		request(url, function(error, response, body){
+			console.log(error, response, body);
+			
 		  if (!error && response.statusCode == 200) {
 				var images = JSON.parse(body);
 				
@@ -28,4 +33,5 @@ var pull_images = function(){
 		
 		// pull_images();
 	}, delay);
-}
+}();
+
