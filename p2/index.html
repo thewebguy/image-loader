@@ -72,7 +72,6 @@
 	}
 	
 	#tabs #clear {
-		position: fixed;
 		right: 22px;
 
 		padding: 10px;
@@ -102,7 +101,6 @@
 	}
 	
 	#log-container {
-		position: fixed;
 		right: 22px;
 		top: 120px;
 		
@@ -324,7 +322,7 @@
 		
 		var more_images = function(){
 			timeout = setTimeout(function(){
-				if ($('.thumb', $images).length > 20) {
+				if (status != "approve" && $('.thumb', $images).length > 20) {
 					return more_images();
 				}
 				
@@ -353,13 +351,13 @@
 						for (var i in data) {
 							var image = data[i];
 							
-							buffer += '<div class="thumb ' + image.status + (image.favorite ? ' favorite' : '') +'" data-image-url="' + image.url + '" id="' + image._id + '"><a href="#" class="favorite">Fav</a><a href="' + image.url + '" target="_blank">';
+							buffer += '<div class="thumb ' + image.status + (image.favorite ? ' favorite' : '') +'" data-image-url="' + image.url + '" id="' + image._id + '"><a href="#" class="favorite">Fav</a>';
 							
 							// console.log(image);
 							
 							switch (image.domain.toLowerCase()) {
 								case 'twitpic.com':
-									buffer += '<img src="' + image.url.replace('twitpic.com/','twitpic.com/show/thumb/') + '" />';
+									buffer += '<img src="' + image. .replace('twitpic.com/','twitpic.com/show/thumb/') + '" />';
 									break;
 									
 								case 'instagram.com':
@@ -372,7 +370,7 @@
 									break;
 							}
 							
-							buffer += '</a><a href="#" class="approve">Approve</a>';
+							buffer += '<a href="#" class="approve">Approve</a>';
 							buffer += '<a href="#" class="reject">Reject</a>';
 							buffer += '</div>';
 						}
