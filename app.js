@@ -221,21 +221,30 @@ mongodb.connect(mongourl, function(err, conn){
 
 	/*    Express Routes
 	*/
-	app.get('/item/:id', function(req, res) {
-		var id = req.params.id;
-			
-    tweets.findOne({_id: tweets.db.bson_serializer.ObjectID.createFromHexString(id)}, function(err, result) {
-    	//result = [result];
-    	console.log("Result: " + result);
-	    	
-	    res.writeHead(200, {'Content-Type': 'text/json', 'Access-Control-Allow-Origin': '*'});
-	    res.write(JSON.stringify(result));
-	    res.end();
-    });
-  });
+	// app.get('/item/:id', function(req, res) {
+	// 	var id = req.params.id;
+	// 		
+	//     tweets.findOne({_id: tweets.db.bson_serializer.ObjectID.createFromHexString(id)}, function(err, result) {
+	//     	//result = [result];
+	//     	console.log("Result: " + result);
+	//     	
+	//     res.writeHead(200, {'Content-Type': 'text/json', 'Access-Control-Allow-Origin': '*'});
+	//     res.write(JSON.stringify(result));
+	//     res.end();
+	//     });
+	//   });
 		
-	app.get('/users', function(req, res) {
-    users.find({}, {limit: 30, sort:[['name','asc']]}, function(err, cursor) {
+	app.get('/images.json', function(req, res) {
+		var id = req.params.id;
+		var last_id = req.query.last_id && req.query.last_id != 0 ? req.query.last_id : null;
+		var count = 20;
+		
+		var options = {
+			status: "approve",
+			approve_timestamp: {$gt: last_id}
+		}
+			
+    images.find(options, {limit: count, sort:[[id_field,direction]]}, function(err, cursor) {
 	    cursor.toArray(function(err, items){
 		    res.writeHead(200, {'Content-Type': 'text/json', 'Access-Control-Allow-Origin': '*'});
 		    res.write(JSON.stringify(items));
@@ -243,6 +252,16 @@ mongodb.connect(mongourl, function(err, conn){
 	    });
     });
   });
+		
+	// app.get('/users', function(req, res) {
+	//     users.find({}, {limit: 30, sort:[['name','asc']]}, function(err, cursor) {
+	//     cursor.toArray(function(err, items){
+	// 	    res.writeHead(200, {'Content-Type': 'text/json', 'Access-Control-Allow-Origin': '*'});
+	// 	    res.write(JSON.stringify(items));
+	// 	    res.end();
+	//     });
+	//     });
+	//   });
 		
 	app.get('/images/:action', function(req, res) {
 		if (!req.query.password || req.query.password != 'P2013') {
