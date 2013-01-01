@@ -11,8 +11,8 @@ var pull_images = function(){
 	console.log('Setting pull.');
 	
 	images_timeout = setTimeout(function(){
-		var url = base_url + '?id_field=approve&last_id=' + last_id;
-		console.log('Starting pull.');
+		var url = base_url + '?last_id=' + last_id;
+		console.log('Starting pull: ', url);
 		
 		request(url, function(error, response, body){
 			console.log(error, response, body);

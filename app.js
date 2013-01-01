@@ -244,7 +244,7 @@ mongodb.connect(mongourl, function(err, conn){
 			approve_timestamp: {$gt: last_id}
 		}
 			
-    images.find(options, {limit: count, sort:[["approve_timestamp",direction]]}, function(err, cursor) {
+    images.find(options, {limit: count, sort:[["approve_timestamp","asc"]]}, function(err, cursor) {
 	    cursor.toArray(function(err, items){
 		    res.writeHead(200, {'Content-Type': 'text/json', 'Access-Control-Allow-Origin': '*'});
 		    res.write(JSON.stringify(items));
