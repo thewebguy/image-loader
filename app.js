@@ -236,14 +236,15 @@ mongodb.connect(mongourl, function(err, conn){
 		
 	app.get('/images.json', function(req, res) {
 		var id = req.params.id;
-		var last_id = req.query.last_id && req.query.last_id != 0 ? req.query.last_id : null;
 		var count = 20;
 		
-		var options = {
-			status: "approve",
-			approve_timestamp: {$gt: last_id}
+		var options = {status: "approve"}
+		var last_id = req.query.last_id && req.query.last_id != 0 ? req.query.last_id : null;
+		
+		if (last_id) {
+			options[id_field]  = {$gt: new Date(last_id)}
 		}
-			
+		
     images.find(options, {limit: count, sort:[["approve_timestamp","asc"]]}, function(err, cursor) {
 	    cursor.toArray(function(err, items){
 		    res.writeHead(200, {'Content-Type': 'text/json', 'Access-Control-Allow-Origin': '*'});
